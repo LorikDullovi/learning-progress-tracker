@@ -1,0 +1,12 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Environment variables
+.env
+.env.test
+.env.production
+.env.local
+
+
