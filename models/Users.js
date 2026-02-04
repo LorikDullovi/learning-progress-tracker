@@ -1,5 +1,3 @@
-//Here is the model for users in the application please i want username email password age profilePicture role and date of registration fields and role and createdat and updatedat should be handled automatically by mongoose.
-
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -7,28 +5,28 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-    email: {
+  email: {
     type: String,
     required: true,
     unique: true,
   },
-    password: {
+  password: {
     type: String,
     required: true
   },
-    age: {
+  age: {
     type: Number,
     min: 0
-    },
-    profilePicture: {
+  },
+  profilePicture: {
     type: String,
     default: ''
-    },
-    role: {
+  },
+  role: {
     type: String,
     enum: ['user', 'admin'],
     default: 'user'
-    }
+  }
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);

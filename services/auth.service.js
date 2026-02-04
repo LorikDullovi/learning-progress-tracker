@@ -39,7 +39,7 @@ const register = async (username, email, age, password, role, profilePicture) =>
   }
 }
 
-const login = async (email, password) => { 
+const login = async (email, password) => {
   try {
     const user = await findUser(email);
     if (!user) {
