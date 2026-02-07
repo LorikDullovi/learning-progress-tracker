@@ -70,9 +70,33 @@ const findUser = async (email) => {
   return user;
 }
 
+
+const changePassword = async (userId, oldPassword, newPassword) => {
+  try {
+    const user = await Users.findById(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      throw new Error("Invalid old password");
+    }
+
+    const hashedPass = await bcrypt.hash(newPassword, 12);
+    user.password = hashedPass;
+    await user.save();
+
+    return { message: "Password updated successfully" };
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports = {
   generateToken,
   register,
   login,
-  findUser
+  findUser,
+  changePassword
 }
