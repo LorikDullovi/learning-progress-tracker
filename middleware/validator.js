@@ -10,16 +10,16 @@ const handleValidationErrors = (req, res, next) => {
 
 const validateRegistration = [
     body('username')
-        .trim() 
+        .trim()
         .notEmpty().withMessage('Username is required')
         .isLength({ min: 5 }).withMessage('Username must be at least 5 characters long')
-        .escape(), 
-        
+        .escape(),
+
     body('email')
         .trim()
         .notEmpty().withMessage('Email is required')
         .isEmail().withMessage('Please provide a valid email address')
-        .normalizeEmail(), 
+        .normalizeEmail(),
 
     body('password')
         .trim()
@@ -27,8 +27,8 @@ const validateRegistration = [
 
     body('age')
         .trim()
-        .isLength({min : 0}).withMessage('Age can not write negative'),
-    
+        .isLength({ min: 0 }).withMessage('Age can not write negative'),
+
     handleValidationErrors
 ];
 
@@ -40,8 +40,18 @@ const validateLogin = [
 
     body('password')
         .notEmpty().withMessage('Password is required'),
-    
+
     handleValidationErrors
 ];
 
-module.exports = { validateRegistration, validateLogin };
+const validateChangePassword = [
+    body('oldPassword')
+        .notEmpty().withMessage('Old Password is required'),
+
+    body('newPassword')
+        .isLength({ min: 8 }).withMessage('New Password must be at least 8 characters long'),
+
+    handleValidationErrors
+];
+
+module.exports = { validateRegistration, validateLogin, validateChangePassword };
