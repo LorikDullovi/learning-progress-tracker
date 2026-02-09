@@ -9,10 +9,16 @@ const handleValidationErrors = (req, res, next) => {
 };
 
 const validateRegistration = [
-    body('username')
+    body('name')
         .trim()
-        .notEmpty().withMessage('Username is required')
-        .isLength({ min: 5 }).withMessage('Username must be at least 5 characters long')
+        .notEmpty().withMessage('Name is required')
+        .isLength({ min: 2 }).withMessage('Name must be at least 2 characters long')
+        .escape(),
+
+    body('surname')
+        .trim()
+        .notEmpty().withMessage('Surname is required')
+        .isLength({ min: 2 }).withMessage('Surname must be at least 2 characters long')
         .escape(),
 
     body('email')
@@ -26,8 +32,7 @@ const validateRegistration = [
         .isLength({ min: 8 }).withMessage('Password must be at least 8 characters long'),
 
     body('age')
-        .trim()
-        .isLength({ min: 0 }).withMessage('Age can not write negative'),
+        .isInt({ min: 0 }).withMessage('Age must be a positive number'),
 
     handleValidationErrors
 ];

@@ -11,7 +11,7 @@ const generateToken = (user) => {
 }
 
 
-const register = async (username, email, age, password, role, profilePicture) => {
+const register = async (name, surname, age, email, password, role) => {
   try {
     const existingUser = await Users.findOne({ email });
     if (existingUser) {
@@ -21,11 +21,11 @@ const register = async (username, email, age, password, role, profilePicture) =>
     const hashedPass = await bcrypt.hash(password, 12);
 
     const newUser = new Users({
-      username,
+      name,
+      surname,
+      age,
       email,
       password: hashedPass,
-      age,
-      profilePicture,
       role
     });
 

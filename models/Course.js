@@ -10,21 +10,19 @@ const courseSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    level: {
-        type: String,
-        required: true,
-        enum: ['Beginner', 'Intermediate', 'Advanced']
-    },
-    createdBy: {
+    createdBy: { // Corresponds to created_by in user request
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
-    },
-    students: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }]
+    }
 }, { timestamps: true });
+
+// Virtual for lessons
+courseSchema.virtual('lessons', {
+    ref: 'Lesson',
+    localField: '_id',
+    foreignField: 'courseId'
+});
 
 const Course = mongoose.model('Course', courseSchema);
 
