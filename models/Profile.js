@@ -11,7 +11,14 @@ const profileSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
-
+    education: {
+        type: [String],
+        default: []
+    },
+    skills: {
+        type: [String],
+        default: []
+    },
     profilePicture: {
         type: String
     }

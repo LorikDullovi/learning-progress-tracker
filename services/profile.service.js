@@ -9,6 +9,7 @@ const createProfile = async (userId, data) => {
         }
         const profile = new Profile({ userId, ...data });
         await profile.save();
+        await profile.populate('userId', 'email role name surname age');
         return profile;
     } catch (error) {
         throw error;
@@ -17,7 +18,7 @@ const createProfile = async (userId, data) => {
 
 const getProfile = async (userId) => {
     try {
-        const profile = await Profile.findOne({ userId });
+        const profile = await Profile.findOne({ userId }).populate('userId', 'email role name surname age');
         if (!profile) return null;
         return profile;
     } catch (error) {
@@ -31,7 +32,7 @@ const updateProfile = async (userId, data) => {
             { userId },
             data,
             { new: true, upsert: true, setDefaultsOnInsert: true }
-        );
+        ).populate('userId', 'email role name surname age');
         return profile;
     } catch (error) {
         throw error;
