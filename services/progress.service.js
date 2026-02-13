@@ -3,7 +3,7 @@ const Users = require('../models/Users');
 const Lesson = require('../models/Lesson');
 const Enrollment = require('../models/Enrollment');
 
-const updateProgress = async (studentId, lessonId, status) => {
+const createLessonProgress = async (studentId, lessonId, status) => {
     try {
         // Step 1: Check if the user is a student
         const user = await Users.findById(studentId);
@@ -90,7 +90,7 @@ const getProgressByLesson = async (studentId, lessonId) => {
 };
 
 module.exports = {
-    updateProgress,
+    createLessonProgress,
     getProgressByStudent,
     getProgressByLesson
 };

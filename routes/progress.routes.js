@@ -6,7 +6,7 @@ const { authMiddleware, adminMiddleware, studentMiddleware } = require('../middl
 router.use(authMiddleware);
 
 //Student routes
-router.post('/:lessonId', studentMiddleware, progressController.updateLessonProgress);
+router.post('/:lessonId', studentMiddleware, progressController.createLessonProgress);
 router.get('/', studentMiddleware, progressController.getMyProgress);
 
 //Admin routes      
