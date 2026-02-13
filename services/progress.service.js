@@ -1,5 +1,4 @@
 const Progress = require('../models/Progress');
-const Users = require('../models/Users');
 const Lesson = require('../models/Lesson');
 const Enrollment = require('../models/Enrollment');
 
@@ -75,18 +74,9 @@ const getProgressByStudent = async (studentId) => {
     }
 };
 
-const getProgressByLesson = async (studentId, lessonId) => {
-    try {
-        const progress = await Progress.findOne({ studentId, lessonId });
-        return progress;
-    } catch (error) {
-        throw error;
-    }
-};
 
 module.exports = {
     createProgress,
     updateProgress,
     getProgressByStudent,
-    getProgressByLesson
 };
