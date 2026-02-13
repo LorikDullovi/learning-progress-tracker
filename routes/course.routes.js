@@ -6,7 +6,6 @@ const { authMiddleware, adminMiddleware } = require('../middleware/authMiddlewar
 
 //Public routes
 router.get('/', courseController.getAllCourses);
-router.get('/:id', courseController.getCourseById);
 
 //Admin only routes
 router.post('/create', authMiddleware, adminMiddleware, courseController.createCourse);

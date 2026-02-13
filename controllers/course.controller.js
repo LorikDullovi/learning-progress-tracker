@@ -9,15 +9,6 @@ const getAllCourses = async (req, res) => {
     }
 };
 
-const getCourseById = async (req, res) => {
-    try {
-        const course = await courseService.getCourseById(req.params.id);
-        if (!course) return res.status(404).json({ message: 'Course not found' });
-        res.status(200).json(course);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
 
 const createCourse = async (req, res) => {
     const data = req.body;
@@ -57,7 +48,6 @@ const deleteCourse = async (req, res) => {
 
 module.exports = {
     getAllCourses,
-    getCourseById,
     createCourse,
     updateCourse,
     deleteCourse

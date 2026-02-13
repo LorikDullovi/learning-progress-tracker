@@ -20,15 +20,6 @@ const getAllCourses = async () => {
     }
 };
 
-const getCourseById = async (id) => {
-    try {
-        const course = await Course.findById(id).populate('createdBy', 'name surname email');
-        return course;
-    } catch (error) {
-        throw error;
-    }
-};
-
 const updateCourse = async (courseId, updateData) => {
     try {
         const course = await Course.findByIdAndUpdate(
@@ -62,7 +53,6 @@ const deleteCourse = async (courseId) => {
 module.exports = {
     createCourse,
     getAllCourses,
-    getCourseById,
     updateCourse,
     deleteCourse
 };
