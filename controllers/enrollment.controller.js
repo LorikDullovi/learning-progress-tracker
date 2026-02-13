@@ -15,19 +15,11 @@ const enrollInCourse = async (req, res) => {
 
         // Step 3: Send Success Response
         res.status(201).json({
-            success: true,
             message: 'Successfully enrolled in course!',
-            data: result
         });
 
     } catch (error) {
-        // Handle Errors
-        let statusCode = 500;
-        if (error.message.includes('not found')) statusCode = 404;
-        if (error.message.includes('already enrolled')) statusCode = 409;
-
-        res.status(statusCode).json({
-            success: false,
+        res.status(500).json({
             message: error.message
         });
     }
@@ -47,14 +39,11 @@ const getEnrolledCourses = async (req, res) => {
 
         // Step 3: Send Response
         res.status(200).json({
-            success: true,
             count: myCourses.length,
-            data: myCourses
         });
 
     } catch (error) {
         res.status(500).json({
-            success: false,
             message: error.message
         });
     }
@@ -75,14 +64,11 @@ const unenrollFromCourse = async (req, res) => {
 
         // Step 3: Success Response
         res.status(200).json({
-            success: true,
             message: 'Successfully unenrolled from the course'
         });
 
     } catch (error) {
-        const statusCode = error.message.includes('not found') ? 404 : 500;
-        res.status(statusCode).json({
-            success: false,
+        res.status(500).json({
             message: error.message
         });
     }
@@ -99,13 +85,11 @@ const getEnrolledStudents = async (req, res) => {
         const students = await enrollmentService.getEnrolledStudents(courseId);
 
         res.status(200).json({
-            success: true,
             count: students.length,
             data: students
         });
     } catch (error) {
         res.status(500).json({
-            success: false,
             message: error.message
         });
     }

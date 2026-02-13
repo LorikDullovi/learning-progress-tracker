@@ -10,6 +10,6 @@ router.put('/my-profile', authMiddleware, profileController.updateMyProfile);
 
 //Admin routes
 router.get('/all-profiles', authMiddleware, adminMiddleware, profileController.getAllProfiles);
-router.get('/user/:id', authMiddleware, adminMiddleware, profileController.getProfileByUserId);
+router.get('/all-profiles/:id', authMiddleware, adminMiddleware, profileController.getProfileByUserId);
 
 module.exports = router;
