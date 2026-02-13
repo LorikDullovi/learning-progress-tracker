@@ -1,7 +1,14 @@
 const Progress = require('../models/Progress');
+const Users = require('../models/Users');
 
 const updateProgress = async (studentId, lessonId, status) => {
     try {
+        // Check if the user is a student
+        const user = await Users.findById(studentId);
+        if (!user || user.role === 'admin') {
+            throw new Error('Only students are allowed to track lesson progress.');
+        }
+
         const updateData = { status };
         if (status === 'COMPLETED') {
             updateData.completedAt = new Date();
