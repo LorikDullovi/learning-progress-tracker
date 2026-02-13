@@ -32,11 +32,23 @@ const updateProgress = async (studentId, lessonId, status) => {
             updateData.completedAt = new Date();
         }
 
-        const progress = await Progress.findOneAndUpdate(
-            { studentId, lessonId },
-            updateData,
-            { new: true, upsert: true, setDefaultsOnInsert: true }
-        );
+        let progress = await Progress.findOne({ studentId, lessonId });
+
+        if (progress) {
+            // Update existing
+            progress.status = status;
+            if (status === 'COMPLETED') progress.completedAt = new Date();
+            await progress.save();
+        } else {
+            // Create new
+            progress = new Progress({
+                studentId,
+                lessonId,
+                ...updateData
+            });
+            await progress.save();
+        }
+
         return progress;
     } catch (error) {
         throw error;

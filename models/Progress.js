@@ -21,8 +21,6 @@ const progressSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-progressSchema.index({ studentId: 1, lessonId: 1 }, { unique: true });
-
 const Progress = mongoose.model('Progress', progressSchema);
 
 module.exports = Progress;

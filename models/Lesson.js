@@ -13,15 +13,13 @@ const lessonSchema = new mongoose.Schema({
     },
     content: {
         type: String,
-        required: true 
+        required: true
     },
     orderNumber: {
         type: Number,
         required: true
     }
 }, { timestamps: true });
-
-lessonSchema.index({ courseId: 1, orderNumber: 1 }, { unique: true });
 
 const Lesson = mongoose.model('Lesson', lessonSchema);
 

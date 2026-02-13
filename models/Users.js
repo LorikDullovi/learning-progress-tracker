@@ -34,14 +34,6 @@ const userSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-//Relationship to Profile (1-1)
-userSchema.virtual('profile', {
-  ref: 'Profile',
-  localField: '_id',
-  foreignField: 'userId',
-  justOne: true
-});
-
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;

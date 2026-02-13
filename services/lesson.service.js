@@ -3,6 +3,14 @@ const Course = require('../models/Course');
 
 const addLesson = async (courseId, data) => {
     try {
+        const { orderNumber } = data;
+
+        // Manual check for unique order number in this course
+        const existingLesson = await Lesson.findOne({ courseId, orderNumber });
+        if (existingLesson) {
+            throw new Error('Lesson order number already exists for this course');
+        }
+
         const newLesson = new Lesson({
             courseId,
             ...data
