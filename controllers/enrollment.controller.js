@@ -1,23 +1,23 @@
 const enrollmentService = require('../services/enrollment.service');
 
-// ==========================================
-// 1. Enroll User in Course
-// Endpoint: POST /api/enrollments/:courseId
-// ==========================================
 const enrollInCourse = async (req, res) => {
     try {
-        // Step 1: Get Data from Request
-        const userId = req.user.id;                 // From Auth Token
-        const courseId = req.params.courseId;       // From URL
+        const userId = req.user.id;
+        const userRole = req.user.role;
+        const courseId = req.params.courseId;
 
-        // Step 2: Call Service to Enroll
+        if (userRole === 'admin') {
+            return res.status(403).json({
+                message: 'Admins are not allowed to enroll in courses.'
+            });
+        }
+
         const result = await enrollmentService.enrollInCourse(userId, courseId);
-
-        // Step 3: Send Success Response
         res.status(201).json({
             message: 'Successfully enrolled in course!',
         });
 
+        return result;
     } catch (error) {
         res.status(500).json({
             message: error.message
@@ -25,21 +25,22 @@ const enrollInCourse = async (req, res) => {
     }
 };
 
-// ==========================================
-// 2. Get Users Enrolled Courses
-// Endpoint: GET /api/enrollments
-// ==========================================
 const getEnrolledCourses = async (req, res) => {
     try {
-        // Step 1: Get User ID from Token
         const userId = req.user.id;
+        const userRole = req.user.role;
 
-        // Step 2: Get List from Service
+        if (userRole === 'admin') {
+            return res.status(403).json({
+                message: 'Admins do not have course enrollments.'
+            });
+        }
+
         const myCourses = await enrollmentService.getEnrolledCourses(userId);
 
-        // Step 3: Send Response
         res.status(200).json({
             count: myCourses.length,
+            data: myCourses
         });
 
     } catch (error) {
@@ -49,20 +50,20 @@ const getEnrolledCourses = async (req, res) => {
     }
 };
 
-// ==========================================
-// 3. Unenroll from Course
-// Endpoint: DELETE /api/enrollments/:courseId
-// ==========================================
 const unenrollFromCourse = async (req, res) => {
     try {
-        // Step 1: Get Data
         const userId = req.user.id;
+        const userRole = req.user.role;
         const courseId = req.params.courseId;
 
-        // Step 2: Delete via Service
+        if (userRole === 'admin') {
+            return res.status(403).json({
+                message: 'Admins are not allowed to unenroll from courses.'
+            });
+        }
+
         await enrollmentService.unenrollFromCourse(userId, courseId);
 
-        // Step 3: Success Response
         res.status(200).json({
             message: 'Successfully unenrolled from the course'
         });
@@ -74,11 +75,6 @@ const unenrollFromCourse = async (req, res) => {
     }
 };
 
-
-// ==========================================
-// 4. Admin: Get Students Enrolled in Course
-// Endpoint: GET /api/enrollments/course/:courseId
-// ==========================================
 const getEnrolledStudents = async (req, res) => {
     try {
         const courseId = req.params.courseId;

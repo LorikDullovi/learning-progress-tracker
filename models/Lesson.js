@@ -13,7 +13,7 @@ const lessonSchema = new mongoose.Schema({
     },
     content: {
         type: String,
-        required: true // Assuming content is text/markdown
+        required: true 
     },
     orderNumber: {
         type: Number,
@@ -21,7 +21,6 @@ const lessonSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-// Compound index to ensure order number is unique per course
 lessonSchema.index({ courseId: 1, orderNumber: 1 }, { unique: true });
 
 const Lesson = mongoose.model('Lesson', lessonSchema);

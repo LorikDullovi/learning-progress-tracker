@@ -13,7 +13,7 @@ const getLessons = async (req, res) => {
 const createLesson = async (req, res) => {
     try {
         const { courseId, title, content, orderNumber } = req.body;
-        // Optionally allow courseId from params if route is /course/:courseId/lessons
+        
         const finalCourseId = courseId || req.params.courseId;
 
         if (!finalCourseId) {

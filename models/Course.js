@@ -6,18 +6,18 @@ const courseSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+
     description: {
         type: String,
         required: true
     },
-    createdBy: { // Corresponds to created_by in user request
+    createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
     }
 }, { timestamps: true });
 
-// Virtual for lessons
 courseSchema.virtual('lessons', {
     ref: 'Lesson',
     localField: '_id',
