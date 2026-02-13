@@ -1,8 +1,17 @@
 const lessonService = require('../services/lesson.service');
+const Enrollment = require('../models/Enrollment');
 
 const getLessons = async (req, res) => {
     try {
         const courseId = req.params.courseId;
+        const userId = req.user.id;
+
+        // Check if the student is enrolled
+        const enrollment = await Enrollment.findOne({ studentId: userId, courseId });
+        if (!enrollment) {
+            return res.status(403).json({ message: 'You must be enrolled in this course to view its lessons.' });
+        }
+
         const lessons = await lessonService.getLessonsByCourse(courseId);
         res.status(200).json(lessons);
     } catch (error) {
@@ -13,7 +22,7 @@ const getLessons = async (req, res) => {
 const createLesson = async (req, res) => {
     try {
         const { courseId, title, content, orderNumber } = req.body;
-        
+
         const finalCourseId = courseId || req.params.courseId;
 
         if (!finalCourseId) {

@@ -1,15 +1,8 @@
 const Enrollment = require('../models/Enrollment');
 const Course = require('../models/Course');
-const Users = require('../models/Users');
 
 const enrollInCourse = async (studentId, courseId) => {
     try {
-        //Check if the user is a student
-        const user = await Users.findById(studentId);
-        if (!user || user.role === 'admin') {
-            throw new Error('Only students are allowed to enroll in courses.');
-        }
-
         //Check if the course actually exists
         const course = await Course.findById(courseId);
         if (!course) {

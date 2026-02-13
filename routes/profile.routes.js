@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const profileController = require('../controllers/profile.controller');
-const { authMiddleware, adminMiddleware } = require('../middleware/authMiddleware');
+const { authMiddleware, adminMiddleware, studentMiddleware } = require('../middleware/authMiddleware');
 
 //Student routes
-router.post('/my-profile', authMiddleware, profileController.createMyProfile);
-router.get('/my-profile', authMiddleware, profileController.getMyProfile);
-router.put('/my-profile', authMiddleware, profileController.updateMyProfile);
+router.post('/my-profile', authMiddleware, studentMiddleware, profileController.createMyProfile);
+router.get('/my-profile', authMiddleware, studentMiddleware, profileController.getMyProfile);
+router.put('/my-profile', authMiddleware, studentMiddleware, profileController.updateMyProfile);
 
 //Admin routes
 router.get('/all-profiles', authMiddleware, adminMiddleware, profileController.getAllProfiles);

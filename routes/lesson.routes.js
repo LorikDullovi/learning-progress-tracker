@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const lessonController = require('../controllers/lesson.controller');
-const { authMiddleware, adminMiddleware } = require('../middleware/authMiddleware');
+const { authMiddleware, adminMiddleware, studentMiddleware } = require('../middleware/authMiddleware');
 
 //Student routes
-router.get('/course/:courseId', authMiddleware, lessonController.getLessons);
+router.get('/course/:courseId', authMiddleware, studentMiddleware, lessonController.getLessons);
 
 //Admin routes
 router.post('/create/:courseId', authMiddleware, adminMiddleware, lessonController.createLesson);

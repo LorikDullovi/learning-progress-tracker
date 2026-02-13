@@ -23,7 +23,12 @@ const adminMiddleware = (req, res, next) => {
   next();
 };
 
+const studentMiddleware = (req, res, next) => {
+  const role = req.user.role;
+  if (role !== 'student') {
+    return res.status(403).json({ message: 'Access denied, student only' });
+  }
+  next();
+};
 
-
-
-module.exports = { authMiddleware, adminMiddleware };
+module.exports = { authMiddleware, adminMiddleware, studentMiddleware };
