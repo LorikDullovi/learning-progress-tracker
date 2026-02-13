@@ -3,52 +3,47 @@ const Users = require('../models/Users');
 const Lesson = require('../models/Lesson');
 const Enrollment = require('../models/Enrollment');
 
-const createLessonProgress = async (studentId, lessonId, status) => {
+const createProgress = async (studentId, lessonId, status) => {
     try {
-        // Step 1: Check if the user is a student
-        const user = await Users.findById(studentId);
-        if (!user || user.role === 'admin') {
-            throw new Error('Only students are allowed to track lesson progress.');
-        }
 
-        // Step 2: Find the lesson and its course
         const lesson = await Lesson.findById(lessonId);
-        if (!lesson) {
-            throw new Error('Lesson not found');
+        if (!lesson) throw new Error('Lesson not found');
+
+        const enrollment = await Enrollment.findOne({ studentId, courseId: lesson.courseId });
+        if (!enrollment) throw new Error('You must be enrolled to track progress.');
+
+        const existingProgress = await Progress.findOne({ studentId, lessonId });
+        if (existingProgress) {
+            throw new Error('Progress already exists. Use update instead.');
         }
 
-        // Step 3: Check if the student is enrolled in the course
-        const enrollment = await Enrollment.findOne({
+        const progress = new Progress({
             studentId,
-            courseId: lesson.courseId
+            lessonId,
+            status,
+            completedAt: status === 'COMPLETED' ? new Date() : null
         });
 
-        if (!enrollment) {
-            throw new Error('You must be enrolled in the course to track progress for this lesson.');
+        await progress.save();
+        return progress;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const updateProgress = async (studentId, lessonId, status) => {
+    try {
+        const progress = await Progress.findOne({ studentId, lessonId });
+        if (!progress) {
+            throw new Error('Progress record not found. Use create instead.');
         }
 
-        const updateData = { status };
+        progress.status = status;
         if (status === 'COMPLETED') {
-            updateData.completedAt = new Date();
+            progress.completedAt = new Date();
         }
 
-        let progress = await Progress.findOne({ studentId, lessonId });
-
-        if (progress) {
-            // Update existing
-            progress.status = status;
-            if (status === 'COMPLETED') progress.completedAt = new Date();
-            await progress.save();
-        } else {
-            // Create new
-            progress = new Progress({
-                studentId,
-                lessonId,
-                ...updateData
-            });
-            await progress.save();
-        }
-
+        await progress.save();
         return progress;
     } catch (error) {
         throw error;
@@ -90,7 +85,8 @@ const getProgressByLesson = async (studentId, lessonId) => {
 };
 
 module.exports = {
-    createLessonProgress,
+    createProgress,
+    updateProgress,
     getProgressByStudent,
     getProgressByLesson
 };
